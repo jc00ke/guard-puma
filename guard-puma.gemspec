@@ -16,6 +16,7 @@ Gem::Specification.new do |gem|
   gem.add_dependency              "guard", ">= 1.0.1"
   gem.add_dependency              "rb-inotify"
   gem.add_dependency              "libnotify"
+  gem.add_development_dependency  "rake", "~> 0.9.2.2"
   gem.add_development_dependency  "rspec", "~> 2.9.0"
   gem.add_development_dependency  "guard-rspec", "~> 0.6.0"
   gem.add_development_dependency  "bundler", "~> 1.1.0"
