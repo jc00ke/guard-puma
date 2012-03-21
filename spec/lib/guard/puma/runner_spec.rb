@@ -44,22 +44,6 @@ describe Guard::PumaRunner do
       end
     end
 
-    context 'daemon' do
-      let(:options) { default_options.merge(:daemon => true) }
-
-      it "should have a daemon switch" do
-        runner.build_rack_command.should match(%r{ --daemonize})
-      end
-    end
-    
-    context 'debugger' do
-      let(:options) { default_options.merge(:debugger => true) }
-
-      it "should have a debugger switch" do
-        runner.build_rack_command.should match(%r{ --debug})
-      end
-    end
-    
   end
 
   describe '#start' do

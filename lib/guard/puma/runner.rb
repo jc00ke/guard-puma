@@ -3,7 +3,7 @@ require 'fileutils'
 module Guard
   class PumaRunner
 
-    MAX_WAIT_COUNT = 10
+    MAX_WAIT_COUNT = 20
 
     attr_reader :options
 
@@ -32,19 +32,16 @@ module Guard
 
     def build_rack_command
       rack_options = [
-        '--env', options[:environment],
         '--port', options[:port],
-        '--pid', pid_file
+        '--pid', pid_file,
+        '-s', 'puma'
       ]
-
-      rack_options << '--daemonize' if options[:daemon]
-      rack_options << '--debug' if options[:debugger]
 
       %{sh -c 'cd #{Dir.pwd} && rackup #{rack_options.join(' ')} &'}
     end
 
     def pid_file
-      File.expand_path(".guard-rack-#{options[:environment]}.pid")
+      File.expand_path(".guard-puma-#{options[:environment]}.pid")
     end
 
     def pid
@@ -96,9 +93,9 @@ module Guard
         wait_for_pid_loop(false)
       end
 
-      def wait_for_pid_loop(check_for_existince = true)
+      def wait_for_pid_loop(check_for_existence = true)
         count = 0
-        while !(check_for_existince ? has_pid? : !has_pid?) && count < MAX_WAIT_COUNT
+        while !(check_for_existence ? has_pid? : !has_pid?) && count < MAX_WAIT_COUNT
           wait_for_pid_action
           count += 1
         end
