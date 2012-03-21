@@ -5,6 +5,7 @@
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 ENV["GUARD_ENV"] = 'test'
+require 'rspec'
 require 'mocha'
 
 RSpec.configure do |config|
