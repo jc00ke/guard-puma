@@ -31,13 +31,13 @@ module Guard
     end
 
     def build_rack_command
-      rack_options = [
+      puma_options = [
         '--port', options[:port],
-        '--pid', pid_file,
-        '-s', 'puma'
+        '--pidfile', pid_file,
+        '-q'
       ]
 
-      %{sh -c 'cd #{Dir.pwd} && rackup #{rack_options.join(' ')} &'}
+      %{sh -c 'cd #{Dir.pwd} && puma #{puma_options.join(' ')} &'}
     end
 
     def pid_file
