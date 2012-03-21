@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-require File.expand_path('../lib/guard-puma/version', __FILE__)
+require File.expand_path('../lib/guard/puma/version', __FILE__)
 
 Gem::Specification.new do |gem|
   gem.authors       = ["Jesse Cooke"]
@@ -12,5 +12,13 @@ Gem::Specification.new do |gem|
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.name          = "guard-puma"
   gem.require_paths = ["lib"]
-  gem.version       = Guard::Puma::VERSION
+  gem.version       = Guard::PumaVersion::VERSION
+  gem.add_dependency              "guard", ">= 1.0.1"
+  gem.add_dependency              "rb-inotify"
+  gem.add_dependency              "libnotify"
+  gem.add_development_dependency  "rspec", "~> 2.9.0"
+  gem.add_development_dependency  "guard-rspec", "~> 0.6.0"
+  gem.add_development_dependency  "bundler", "~> 1.1.2"
+  gem.add_development_dependency  "fakefs"
+  gem.add_development_dependency  "mocha"
 end
