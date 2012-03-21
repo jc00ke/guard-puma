@@ -7,7 +7,7 @@ describe Guard::Puma do
   let(:options) { {} }
 
   describe '#initialize' do
-    it "should initialize with options" do
+    it "initializes with options" do
       guard
 
       guard.runner.options[:port].should == 4000
@@ -18,7 +18,7 @@ describe Guard::Puma do
     let(:ui_expectation) { Guard::UI.expects(:info).with(regexp_matches(/#{Guard::Puma::DEFAULT_OPTIONS[:port]}/)) }
 
     context 'start on start' do
-      it "should show the right message and run startup" do
+      it "shows the right message and run startup" do
         guard.expects(:reload).once
         ui_expectation
         guard.start
@@ -28,7 +28,7 @@ describe Guard::Puma do
     context 'no start on start' do
       let(:options) { { :start_on_start => false } }
 
-      it "should show the right message and not run startup" do
+      it "shows the right message and not run startup" do
         guard.expects(:reload).never
         ui_expectation
         guard.start
@@ -52,7 +52,7 @@ describe Guard::Puma do
         runner_stub.returns(true)
       end
 
-      it "should restart and show the pid file" do
+      it "restarts and show the pid file" do
         Guard::UI.expects(:info).with(regexp_matches(/#{pid}/))
         Guard::Notifier.expects(:notify).with(regexp_matches(/Puma restarted/), has_entry(:image => :success))
 
@@ -65,7 +65,7 @@ describe Guard::Puma do
         runner_stub.returns(false)
       end
 
-      it "should restart and show the pid file" do
+      it "restarts and show the pid file" do
         Guard::UI.expects(:info).with(regexp_matches(/#{pid}/)).never
         Guard::UI.expects(:info).with(regexp_matches(/Puma NOT restarted/))
         Guard::Notifier.expects(:notify).with(regexp_matches(/Puma NOT restarted/), has_entry(:image => :failed))
@@ -76,14 +76,14 @@ describe Guard::Puma do
   end
 
   describe '#stop' do
-    it "should stop correctly" do
+    it "stops correctly" do
       Guard::Notifier.expects(:notify).with('Until next time...', anything)
       guard.stop
     end
   end
 
   describe '#run_on_change' do
-    it "should reload on change" do
+    it "reloads on change" do
       guard.expects(:reload).once
       guard.run_on_change([])
     end

@@ -21,13 +21,13 @@ describe Guard::PumaRunner do
         File.open(runner.pid_file, 'w') { |fh| fh.print pid }
       end
 
-      it "should read the pid" do
+      it "reads the pid" do
         runner.pid.should == pid
       end
     end
 
     context 'pid file does not exist' do
-      it "should return nil" do
+      it "returns nil" do
         if defined?(Rubinius)
           runner.pid.should == nil
         else
@@ -35,15 +35,6 @@ describe Guard::PumaRunner do
         end
       end
     end
-  end
-
-  describe '#build_rack_command' do
-    context 'no daemon' do
-      it "should not have a daemon switch" do
-        runner.build_rack_command.should_not match(%r{ --daemonize})
-      end
-    end
-
   end
 
   describe '#start' do
@@ -61,7 +52,7 @@ describe Guard::PumaRunner do
         runner.expects(:wait_for_pid_action).never
       end
 
-      it "should act properly" do
+      it "acts properly" do
         runner.start.should be_true
       end
     end
@@ -75,7 +66,7 @@ describe Guard::PumaRunner do
         runner.expects(:wait_for_pid_action).never
       end
 
-      it "should act properly" do
+      it "acts properly" do
         runner.start.should be_true
       end
     end
@@ -87,7 +78,7 @@ describe Guard::PumaRunner do
         runner.expects(:wait_for_pid_action).times(Guard::PumaRunner::MAX_WAIT_COUNT)
       end
 
-      it "should act properly" do
+      it "acts properly" do
         runner.start.should be_false
       end
     end
@@ -97,7 +88,7 @@ describe Guard::PumaRunner do
     let(:timeout) { 30 }
     let(:options) { default_options.merge(:timeout => timeout) }
 
-    it "should adjust the sleep time as necessary" do
+    it "adjusts the sleep time as necessary" do
       runner.sleep_time.should == (timeout.to_f / Guard::PumaRunner::MAX_WAIT_COUNT.to_f)
     end
   end
