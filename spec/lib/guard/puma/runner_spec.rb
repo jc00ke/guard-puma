@@ -5,7 +5,7 @@ require 'fakefs/spec_helpers'
 describe Guard::PumaRunner do
   let(:runner) { Guard::PumaRunner.new(options) }
   let(:environment) { 'development' }
-  let(:port) { 3000 }
+  let(:port) { 4000 }
   
   let(:default_options) { { :environment => environment, :port => port } }
   let(:options) { default_options }
@@ -42,7 +42,7 @@ describe Guard::PumaRunner do
     let(:pid_stub) { runner.stubs(:has_pid?) }
 
     before do
-      runner.expects(:run_rack_command!).once
+      runner.expects(:run_puma_command!).once
     end
 
     context 'do not force run' do
@@ -90,6 +90,59 @@ describe Guard::PumaRunner do
 
     it "adjusts the sleep time as necessary" do
       runner.sleep_time.should == (timeout.to_f / Guard::PumaRunner::MAX_WAIT_COUNT.to_f)
+    end
+  end
+
+  describe "#build_puma_command" do
+    let(:command) {
+      Guard::PumaRunner.new(options).build_puma_command
+    }
+    context "with config" do
+      let(:options) {{ :config => path }}
+      let(:path) { "/tmp/elephants" }
+      it "adds path to command" do
+        command.should match("--config #{path}")
+      end
+    end
+
+    context "with bind" do
+      let(:options) {{ :bind => uri }}
+      let(:uri) { "tcp://foo" }
+      it "adds uri option to command" do
+        command.should match("--bind #{uri}")
+      end
+    end
+
+    context "with state" do
+      let(:options) {{ :state => path }}
+      let(:path) { "/tmp/zebras" }
+      it "adds path to command" do
+        command.should match("--state #{path}")
+      end
+    end
+
+    context "with control" do
+      let(:options) {{ :control => uri }}
+      let(:uri) { "http://foo" }
+      it "adds path to command" do
+        command.should match("--control #{uri}")
+      end
+    end
+
+    context "with control_token" do
+      let(:options) {{ :control_token => token }}
+      let(:token) { "IMMA_TOKEN" }
+      it "adds path to command" do
+        command.should match("--control-token #{token}")
+      end
+    end
+
+    context "with threads" do
+      let(:options) {{ :threads => threads }}
+      let(:threads) { "13:42" }
+      it "adds path to command" do
+        command.should match("--threads #{threads}")
+      end
     end
   end
 end

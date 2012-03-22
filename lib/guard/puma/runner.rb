@@ -13,7 +13,7 @@ module Guard
 
     def start
       kill_unmanaged_pid! if options[:force_run]
-      run_rack_command!
+      run_puma_command!
       wait_for_pid
     end
 
@@ -30,14 +30,18 @@ module Guard
       start
     end
 
-    def build_rack_command
-      puma_options = [
-        '--port', options[:port],
-        '--pidfile', pid_file,
-        '-q'
-      ]
+    def build_puma_command
+      puma_options = {
+        '--port' => options[:port],
+        '--pidfile' => pid_file,
+      }
+      [:config, :bind, :state, :control, :threads].each do |opt|
+        puma_options["--#{opt}"] = options[opt] if options[opt]
+      end
+      puma_options["--control-token"] = options[:control_token] if options[:control_token]
+      opts = puma_options.to_a.flatten << '-q'
 
-      %{sh -c 'cd #{Dir.pwd} && puma #{puma_options.join(' ')} &'}
+      %{sh -c 'cd #{Dir.pwd} && puma #{opts.join(' ')} &'}
     end
 
     def pid_file
@@ -54,8 +58,8 @@ module Guard
 
     private
     
-    def run_rack_command!
-      system build_rack_command
+    def run_puma_command!
+      system build_puma_command
     end
 
     def has_pid?
