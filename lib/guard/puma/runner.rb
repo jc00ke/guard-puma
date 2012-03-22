@@ -1,4 +1,5 @@
 require 'fileutils'
+require 'tmpdir'
 
 module Guard
   class PumaRunner
@@ -45,7 +46,9 @@ module Guard
     end
 
     def pid_file
-      File.expand_path(".guard-puma-#{options[:environment]}.pid")
+      pidfilepath = File.expand_path(options[:pidfile]) if options[:pidfile]
+      @pf ||= (pidfilepath || \
+               File.expand_path("#{Dir.tmpdir}/guard-puma-#{options[:environment]}.pid"))
     end
 
     def pid

@@ -38,7 +38,8 @@ end
 * `:daemon` runs the server as a daemon, without any output to the terminal that ran `guard` (default `false`).
 * `:debugger` runs the server with the debugger enabled (default `false`). Required ruby-debug gem.
 * `:timeout` waits this number of seconds when restarting the Puma server before reporting there's a problem (default `20`).
-* `:config` is the path to Puma config file (optional)
+* `:config` is the path to the Puma config file (optional)
+* `:pidfile`` is the path to store the pid file (optional)
 * `:bind` is URI to bind to (tcp:// and unix:// only) (optional)
 * `:state` is the path to store the state details (optional)
 * `:control` is the bind URL to use for the control server. Use 'auto' to use temp unix server (optional)
