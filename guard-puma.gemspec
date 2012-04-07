@@ -22,5 +22,4 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency  "guard-rspec", "~> 0.7.0"
   gem.add_development_dependency  "bundler", "~> 1.1.0"
   gem.add_development_dependency  "fakefs"
-  gem.add_development_dependency  "mocha"
 end
