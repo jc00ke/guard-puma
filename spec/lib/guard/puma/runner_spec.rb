@@ -39,13 +39,14 @@ describe Guard::PumaRunner do
   end
 
   describe "#build_puma_command" do
-    let(:command) { Guard::PumaRunner.new(options).start }
+    let(:runner) { Guard::PumaRunner.new(options) }
+    let(:command) { runner.start }
 
     context "with config" do
       let(:options) {{ :config => path }}
       let(:path) { "/tmp/elephants" }
       it "adds path to command" do
-        command.should match("--config #{path}")
+        runner.cmd_opts.should match("--config #{path}")
       end
     end
 
@@ -53,15 +54,15 @@ describe Guard::PumaRunner do
       let(:options) {{ :bind => uri }}
       let(:uri) { "tcp://foo" }
       it "adds uri option to command" do
-        command.should match("--bind #{uri}")
+        runner.cmd_opts.should match("--bind #{uri}")
       end
     end
 
     context "with control_token" do
       let(:options) {{ :control_token => token }}
-      let(:token) { "IMMA_TOKEN" }
-      it "adds path to command" do
-        command.should match("--control-token #{token}")
+      let(:token) { "imma-token" }
+      it "adds token to command" do
+        runner.cmd_opts.should match(/--control-token #{token}/)
       end
     end
 
@@ -69,7 +70,7 @@ describe Guard::PumaRunner do
       let(:options) {{ :threads => threads }}
       let(:threads) { "13:42" }
       it "adds path to command" do
-        command.should match("--threads #{threads}")
+        runner.cmd_opts.should match("--threads #{threads}")
       end
     end
   end

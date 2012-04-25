@@ -1,11 +1,12 @@
 require 'net/http'
+require 'rest-client'
 
 module Guard
   class PumaRunner
 
     MAX_WAIT_COUNT = 20
 
-    attr_reader :options, :control_url, :control_token
+    attr_reader :options, :control_url, :control_token, :cmd_opts
 
     def initialize(options)
       @control_token = (options.delete(:control_token) || 'pumarules')
@@ -13,9 +14,7 @@ module Guard
       @control_port = (options.delete(:control_port) || '9293')
       @control_url = "#{@control}:#{@control_port}"
       @options = options
-    end
 
-    def start
       puma_options = {
         '--port' => options[:port],
         '--control-token' => @control_token,
@@ -24,9 +23,11 @@ module Guard
       [:config, :bind, :threads].each do |opt|
         puma_options["--#{opt}"] = options[opt] if options[opt]
       end
-      opts = puma_options.to_a.flatten << '-q'
+      @cmd_opts = (puma_options.to_a.flatten << '-q').join(' ')
+    end
 
-      %{sh -c 'cd #{Dir.pwd} && puma #{opts.join(' ')} &'}
+    def start
+      system %{sh -c 'cd #{Dir.pwd} && puma #{cmd_opts} &'}
     end
 
     def halt
@@ -44,11 +45,11 @@ module Guard
     private
     
     def run_puma_command!(cmd)
-      Net::HTTP.get((build_uri(cmd)))
-    end
-
-    def build_uri(cmd)
-      URI("http://#{control_url}/#{cmd}?token=#{control_token}")
+      RestClient.get "http://#{control_url}/#{cmd}", :params => { :token => control_token }
+      return true
+    rescue Errno::ECONNREFUSED => e
+      # server may not have been started correctly.
+      false
     end
 
   end

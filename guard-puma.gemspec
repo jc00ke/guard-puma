@@ -17,9 +17,10 @@ Gem::Specification.new do |gem|
   gem.add_dependency              "rb-inotify"
   gem.add_dependency              "libnotify"
   gem.add_dependency              "puma"
+  gem.add_dependency              "rest-client"
   gem.add_development_dependency  "rake", "~> 0.9.2.2"
   gem.add_development_dependency  "rspec", "~> 2.9.0"
   gem.add_development_dependency  "guard-rspec", "~> 0.7.0"
   gem.add_development_dependency  "bundler", "~> 1.1.0"
-  gem.add_development_dependency  "fakefs"
+  gem.add_development_dependency  "pry"
 end
