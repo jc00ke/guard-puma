@@ -1,5 +1,9 @@
 # Changes
 
+## 0.2.0
+
+* Switched to puma's control server. pid file was too messy.
+
 ## 0.1.0
 
 * Fixed pid file path. Ready for general consumption.
