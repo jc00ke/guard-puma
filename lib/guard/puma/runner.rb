@@ -1,5 +1,4 @@
 require 'net/http'
-require 'rest-client'
 
 module Guard
   class PumaRunner
@@ -45,11 +44,15 @@ module Guard
     private
     
     def run_puma_command!(cmd)
-      RestClient.get "http://#{control_url}/#{cmd}", :params => { :token => control_token }
+      Net::HTTP.get build_uri(cmd)
       return true
     rescue Errno::ECONNREFUSED => e
       # server may not have been started correctly.
       false
+    end
+
+    def build_uri(cmd)
+      URI "http://#{control_url}/#{cmd}?token=#{control_token}"
     end
 
   end
