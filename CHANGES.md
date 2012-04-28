@@ -1,5 +1,9 @@
 # Changes
 
+## 0.2.1
+
+* Fix restarting & halting inside the runner.
+
 ## 0.2.0
 
 * Switched to puma's control server. pid file was too messy.
