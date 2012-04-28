@@ -1,5 +1,9 @@
 # Changes
 
+## 0.2.2
+
+* Remove unused dependency on RestClient.
+
 ## 0.2.1
 
 * Fix restarting & halting inside the runner.
