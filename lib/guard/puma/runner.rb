@@ -12,6 +12,7 @@ module Guard
       @control = "0.0.0.0"
       @control_port = (options.delete(:control_port) || '9293')
       @control_url = "#{@control}:#{@control_port}"
+      @quiet = options.delete(:quiet) { true }
       @options = options
 
       puma_options = {
@@ -22,7 +23,9 @@ module Guard
       [:config, :bind, :threads].each do |opt|
         puma_options["--#{opt}"] = options[opt] if options[opt]
       end
-      @cmd_opts = (puma_options.to_a.flatten << '-q').join(' ')
+      puma_options = puma_options.to_a.flatten
+      puma_options << '-q' if @quiet
+      @cmd_opts = puma_options.join ' '
     end
 
     def start
