@@ -1,5 +1,9 @@
 # Changes
 
+## 0.2.3
+
+* Add quiet flag to suppress output
+
 ## 0.2.2
 
 * Remove unused dependency on RestClient.
