@@ -18,7 +18,8 @@ module Guard
       puma_options = {
         '--port' => options[:port],
         '--control-token' => @control_token,
-        '--control' => "tcp://#{@control_url}"
+        '--control' => "tcp://#{@control_url}",
+        '--environment' => options[:environment]
       }
       [:config, :bind, :threads].each do |opt|
         puma_options["--#{opt}"] = options[opt] if options[opt]
