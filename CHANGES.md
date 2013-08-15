@@ -1,5 +1,7 @@
 # Changes
 
+* Fix bug where runner not respecting environment set in Guard options
+
 ## 0.2.3
 
 * Add quiet flag to suppress output
