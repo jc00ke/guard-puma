@@ -18,7 +18,7 @@ Gem::Specification.new do |gem|
   gem.add_dependency              "libnotify"
   gem.add_dependency              "puma"
   gem.add_development_dependency  "rake", "~> 0.9.2.2"
-  gem.add_development_dependency  "rspec", "~> 2.10.0"
+  gem.add_development_dependency  "rspec", "~> 2.14.0"
   gem.add_development_dependency  "guard-rspec", "~> 0.7.0"
   gem.add_development_dependency  "pry"
 end
