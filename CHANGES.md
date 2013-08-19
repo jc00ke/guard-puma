@@ -1,5 +1,7 @@
 # Changes
 
+## 0.2.4
+
 * Fix bug where runner not respecting environment set in Guard options
 
 ## 0.2.3
