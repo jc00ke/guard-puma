@@ -1,64 +1,163 @@
-require 'net/http'
+require 'puma/configuration'
+require 'puma/control_cli'
 
 module Guard
-  class PumaRunner
-
-    MAX_WAIT_COUNT = 20
-
-    attr_reader :options, :control_url, :control_token, :cmd_opts
+  class PumaRunner < Puma::ControlCLI
+    OUR_KEYS = [:start_on_start, :force_run, :timeout, :port, :host]
+    DEFAULT_HOST = ::Puma::Configuration::DefaultTCPHost
+    DEFAULT_PORT = ::Puma::Configuration::DefaultTCPPort
+    DEFAULT_BIND = "tcp://%s:%s" % [DEFAULT_HOST, DEFAULT_PORT]
 
     def initialize(options)
-      @control_token = (options.delete(:control_token) || 'pumarules')
-      @control = "0.0.0.0"
-      @control_port = (options.delete(:control_port) || '9293')
-      @control_url = "#{@control}:#{@control_port}"
-      @quiet = options.delete(:quiet) { true }
-      @options = options
-
-      puma_options = {
-        '--port' => options[:port],
-        '--control-token' => @control_token,
-        '--control' => "tcp://#{@control_url}",
-        '--environment' => options[:environment]
-      }
-      [:config, :bind, :threads].each do |opt|
-        puma_options["--#{opt}"] = options[opt] if options[opt]
+      # add a bind if host or port were set by convenience parameter
+      binds = []
+      if options[:host] or options[:port]
+        binds << "tcp://%s:%s" % [options[:host] || DEFAULT_HOST, options[:port] || DEFAULT_PORT]
+        options.delete_if { |k| k == :host or k == :port }
       end
-      puma_options = puma_options.to_a.flatten
-      puma_options << '-q' if @quiet
-      @cmd_opts = puma_options.join ' '
+      @args = options.clone
+      @args ||= {}
+      @args[:binds] ||= []
+      @args[:binds].concat(binds)
+      @args[:puma_args] ||= []
+      @args[:puma_args] = [@args[:puma_args]] if not options[:puma_args].respond_to?(:join)
+
+      # drop options used only for guard
+      @options = options.clone.reject { |key| OUR_KEYS.include?(key)}
+      @options ||= {}
+      @options[:binds] ||= []
+      @options[:binds].concat(binds)
+
+      ::Puma::Configuration.new(@options).load
     end
 
+    # override the usual start method otherwise puma gets launched inside guard
     def start
-      system %{sh -c 'cd #{Dir.pwd} && puma #{cmd_opts} &'}
+      unless puma_running?
+        run(:halt)
+        system %{sh -c 'cd %s && puma %s &'} % [Dir.pwd, puma_args.join(" ")]
+      end
+      true
     end
 
     def halt
-      run_puma_command!("halt")
+      run(:halt)
     end
 
     def restart
-      run_puma_command!("restart")
+      if puma_running?
+        run(:'phased-restart')
+      else
+        start
+      end
     end
 
-    def sleep_time
-      options[:timeout].to_f / MAX_WAIT_COUNT.to_f
+
+    def run(command)
+      begin
+        prepare_configuration
+
+        if is_windows?
+          send_request(command)
+        else
+          @options.has_key?(:control_url) ? send_request(command) : send_signal(command)
+        end
+      rescue => e
+        @message = e.message
+      end
+      @message
+    end
+
+    def message(msg)
+      @message = msg
+    end
+
+    def send_request(command)
+      orig_command = @options[:command]
+      @options[:command] = command
+      super()
+      @options[:command] = orig_command
+    end
+
+    def send_signal(command)
+      orig_command = @options[:command]
+      @options[:command] = command
+      super()
+      @options[:command] = orig_command
+    end
+
+    # since we are only interested in non-defaults, wipe out defaults set by Puma::Configuration
+    private
+    def delete_default_options
+      @options[:binds].delete_if { |v| v == DEFAULT_BIND }
+      @options.delete_if { |k,v| v == [] or (k == :mode and v = :http) }
+    end
+
+    # this is a nasty hack :(
+    private
+    def puma_running?
+      run(:status)
+      return @message == "Puma is running"
     end
 
     private
-    
-    def run_puma_command!(cmd)
-      Net::HTTP.get build_uri(cmd)
-      return true
-    rescue Errno::ECONNREFUSED => e
-      # server may not have been started correctly.
-      false
+    def have_config_file?
+      @options[:config_file]
     end
 
-    def build_uri(cmd)
-      URI "http://#{control_url}/#{cmd}?token=#{control_token}"
+    # from https://github.com/puma/puma/blob/master/lib/puma/cli.rb
+    private
+    def puma_args
+      if have_config_file?
+        puma_arg_list(@args.reject { |k,v| (@options[k] == v and k != :config_file) or OUR_KEYS.include?(k) or v == [] })
+      else
+        puma_arg_list(@options)
+      end
     end
 
+    private
+    def puma_arg_list(options)
+      options.map do |name,value|
+        case name
+        when :binds
+          value.map { |v| ["--bind", v] }
+        when :config_file
+          ['--config', value]
+        when :control_url
+          ['--control', value]
+        when :control_token
+          ['--control-token', value]
+        when :daemon
+          ['--daemon', value]
+        when :debug
+          ['--debug', value]
+        when :directory
+          ['--directory', value]
+        when :environment
+          ['--environment', value]
+        when :pidfile
+          ['--pidfile', value]
+        when :preload_app
+          ['--preload', value]
+        when :quiet
+          ['--quiet', value]
+        when :restart_cmd
+          ['--restart_cmd', value]
+        when :state
+          ['--state', value]
+        when :min_threads
+          # puma defaults to 0:16
+          ['--threads', [value || 0, options[:max_threads] || 16].join(':')]
+        when :max_threads
+          ['--threads', [0, options[:max_threads]].join(':')] unless options[:min_threads]
+        when :mode
+          ['--tcp-mode'] if value == :tcp
+        when :workers
+          ['--workers', value]
+        else
+          nil
+        end
+      end.flatten.compact.concat(@args[:puma_args])
+    end
   end
 end
-
