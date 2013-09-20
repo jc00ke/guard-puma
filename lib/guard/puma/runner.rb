@@ -118,19 +118,20 @@ module Guard
     private
     def puma_arg_list(options)
       options.map do |name,value|
+        value = value.to_s unless value.respond_to?(:index)
         case name
         when :binds
           value.map { |v| ["--bind", v] }
         when :config_file
-          ['--config', value]
+          ['--config', File.expand_path(value)]
         when :control_url
           ['--control', value]
         when :control_token
           ['--control-token', value]
         when :daemon
-          ['--daemon', value]
+          ['--daemon']
         when :debug
-          ['--debug', value]
+          ['--debug']
         when :directory
           ['--directory', value]
         when :environment
@@ -138,9 +139,9 @@ module Guard
         when :pidfile
           ['--pidfile', value]
         when :preload_app
-          ['--preload', value]
+          ['--preload']
         when :quiet
-          ['--quiet', value]
+          ['--quiet']
         when :restart_cmd
           ['--restart_cmd', value]
         when :state
