@@ -99,7 +99,7 @@ module Guard
     private
     def puma_running?
       run('status')
-      return @message == "Puma is running"
+      return ["Puma is running","Puma is started"].include?(@message)
     end
 
     private
