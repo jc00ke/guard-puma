@@ -41,14 +41,14 @@ module Guard
     end
 
     def halt
-      run(:halt)
+      run('halt')
       prepare_configuration
-      send_signal(:halt) unless @message == "Command halt sent success"
+      send_signal('halt') unless @message == "Command halt sent success"
     end
 
     def restart
       if puma_running?
-        run(:'phased-restart')
+        run('phased-restart')
       else
         start
       end
@@ -98,7 +98,7 @@ module Guard
     # this is a nasty hack :(
     private
     def puma_running?
-      run(:status)
+      run('status')
       return @message == "Puma is running"
     end
 
