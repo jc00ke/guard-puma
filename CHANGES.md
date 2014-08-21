@@ -1,5 +1,9 @@
 # Changes
 
+## HEAD
+
+* Change rb-inotify and libnotify to be development dependencies
+
 ## 0.2.4
 
 * Fix bug where runner not respecting environment set in Guard options
