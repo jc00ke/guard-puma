@@ -1,8 +1,9 @@
 # Changes
 
-## HEAD
+## 0.2.5
 
 * Change rb-inotify and libnotify to be development dependencies
+* Update test Rubies
 
 ## 0.2.4
 
