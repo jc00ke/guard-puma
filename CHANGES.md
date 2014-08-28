@@ -1,5 +1,7 @@
 # Changes
 
+* Get environment from  RACK_ENV by default
+
 ## 0.2.5
 
 * Change rb-inotify and libnotify to be development dependencies

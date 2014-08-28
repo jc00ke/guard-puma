@@ -14,6 +14,18 @@ describe Guard::Puma do
     end
   end
 
+  describe "#default_env" do
+    it "uses RACK_ENV if exists" do
+      ENV['RACK_ENV'] = 'production'
+      Guard::Puma.default_env.should == 'production'
+      ENV.delete('RACK_ENV')
+    end
+
+    it "defaults to development" do
+      Guard::Puma.default_env.should == 'development'
+    end
+  end
+
   describe '#start' do
 
     context 'start on start' do
