@@ -9,11 +9,8 @@ module Guard
     attr_reader :options, :runner
     DEFAULT_OPTIONS = {
       :port => 4000,
-      :environment => 'development',
       :start_on_start => true,
       :force_run => false,
-      :timeout => 20,
-      :debugger => false
     }
 
     def initialize(watchers = [], options = {})
