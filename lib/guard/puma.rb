@@ -21,7 +21,7 @@ module Guard
       :debugger => false
     }
 
-    def initialize(watchers = [], options = {})
+    def initialize(options = {})
       super
       @options = DEFAULT_OPTIONS.merge(options)
       @runner = ::Guard::PumaRunner.new(@options)

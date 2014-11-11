@@ -2,8 +2,7 @@ require 'spec_helper'
 require 'guard/puma'
 
 describe Guard::Puma do
-  let(:guard) { Guard::Puma.new(watchers, options) }
-  let(:watchers) { [] }
+  let(:guard) { Guard::Puma.new(options) }
   let(:options) { {} }
 
   describe '#initialize' do
