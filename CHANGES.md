@@ -1,5 +1,6 @@
 # Changes
 
+* Depend on Guard ~> 2.8
 * Get environment from  RACK_ENV by default
 
 ## 0.2.5
