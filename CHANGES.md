@@ -1,5 +1,6 @@
 # Changes
 
+* Update Guard::Puma initialize method to accept only options hash
 * Depend on Guard ~> 2.8
 * Get environment from  RACK_ENV by default
 
