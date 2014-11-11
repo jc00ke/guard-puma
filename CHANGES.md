@@ -1,5 +1,7 @@
 # Changes
 
+* Update RSpec
+
 ## 0.3.0
 
 * Depend on rake 10.2+
