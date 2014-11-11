@@ -14,25 +14,32 @@ describe Guard::Puma do
   end
 
   describe "#default_env" do
+    before do
+      @rack_env = ENV['RACK_ENV']
+    end
+
     context "when RACK_ENV is set" do
       before do
-        @rack_env = ENV['RACK_ENV']
+        ENV['RACK_ENV'] = 'IAMGROOT'
       end
 
       it "uses the value of RACK_ENV" do
-        ENV['RACK_ENV'] = 'production'
-        expect(Guard::Puma.default_env).to eq('production')
-      end
-
-      after do
-        ENV['RACK_ENV'] = @rack_env
+        expect(Guard::Puma.default_env).to eq('IAMGROOT')
       end
     end
 
     context "when RACK_ENV is not set" do
+      before do
+        ENV.delete('RACK_ENV')
+      end
+
       it "defaults to development" do
         expect(Guard::Puma.default_env).to eq('development')
       end
+    end
+
+    after do
+      ENV['RACK_ENV'] = @rack_env
     end
   end
 
