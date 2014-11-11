@@ -7,9 +7,14 @@ require "guard/puma/version"
 module Guard
   class Puma < Guard
     attr_reader :options, :runner
+
+    def self.default_env
+      ENV.fetch('RACK_ENV', 'development')
+    end
+
     DEFAULT_OPTIONS = {
       :port => 4000,
-      :environment => 'development',
+      :environment => default_env,
       :start_on_start => true,
       :force_run => false,
       :timeout => 20,
