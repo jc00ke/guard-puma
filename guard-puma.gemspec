@@ -16,7 +16,7 @@ Gem::Specification.new do |gem|
   gem.add_dependency              "guard", "~> 2.8"
   gem.add_dependency              "puma"
   gem.add_development_dependency  "rake", "~> 10.2"
-  gem.add_development_dependency  "rspec", "~> 2.14.0"
-  gem.add_development_dependency  "guard-rspec", "~> 0.7.0"
+  gem.add_development_dependency  "rspec", "~> 3.1.0"
+  gem.add_development_dependency  "guard-rspec", "~> 4.3.0"
   gem.add_development_dependency  "pry"
 end

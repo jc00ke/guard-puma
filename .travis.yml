@@ -4,3 +4,4 @@ rvm:
   - 2.1.2
   - rbx-2
   - jruby-19mode
+install: bundle install --retry=3

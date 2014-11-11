@@ -11,18 +11,18 @@ describe Guard::PumaRunner do
 
   describe "#initialize" do
     it "sets options" do
-      runner.options.should eq(options)
+      expect(runner.options).to eq(options)
     end
   end
   
   %w(halt restart).each do |cmd|
     describe cmd do
       before do
-        runner.stub(:build_uri).with(cmd).and_return(uri)
+        allow(runner).to receive(:build_uri).with(cmd).and_return(uri)
       end
       let(:uri) { URI("http://#{runner.control_url}/#{cmd}?token=#{runner.control_token}") }
       it "#{cmd}s" do
-        Net::HTTP.should_receive(:get).with(uri).once
+        expect(Net::HTTP).to receive(:get).with(uri).once
         runner.send(cmd.intern)
       end
     end
@@ -34,7 +34,7 @@ describe Guard::PumaRunner do
     let(:options) { default_options.merge(:timeout => timeout) }
 
     it "adjusts the sleep time as necessary" do
-      runner.sleep_time.should == (timeout.to_f / Guard::PumaRunner::MAX_WAIT_COUNT.to_f)
+      expect(runner.sleep_time).to eq(timeout.to_f / Guard::PumaRunner::MAX_WAIT_COUNT.to_f)
     end
   end
 
@@ -46,7 +46,7 @@ describe Guard::PumaRunner do
       let(:options) {{ :config => path }}
       let(:path) { "/tmp/elephants" }
       it "adds path to command" do
-        runner.cmd_opts.should match("--config #{path}")
+        expect(runner.cmd_opts).to match("--config #{path}")
       end
     end
 
@@ -54,7 +54,7 @@ describe Guard::PumaRunner do
       let(:options) {{ :bind => uri }}
       let(:uri) { "tcp://foo" }
       it "adds uri option to command" do
-        runner.cmd_opts.should match("--bind #{uri}")
+        expect(runner.cmd_opts).to match("--bind #{uri}")
       end
     end
 
@@ -62,7 +62,7 @@ describe Guard::PumaRunner do
       let(:options) {{ :control_token => token }}
       let(:token) { "imma-token" }
       it "adds token to command" do
-        runner.cmd_opts.should match(/--control-token #{token}/)
+        expect(runner.cmd_opts).to match(/--control-token #{token}/)
       end
     end
 
@@ -70,7 +70,7 @@ describe Guard::PumaRunner do
       let(:options) {{ :threads => threads }}
       let(:threads) { "13:42" }
       it "adds path to command" do
-        runner.cmd_opts.should match("--threads #{threads}")
+        expect(runner.cmd_opts).to match("--threads #{threads}")
       end
     end
   end
