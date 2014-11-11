@@ -1,6 +1,9 @@
 # Changes
 
-* Update RSpec
+## 0.3.1
+
+* Update RSpec to 3.1.0+
+* Fix Travis CI builds on Rubinius
 
 ## 0.3.0
 
