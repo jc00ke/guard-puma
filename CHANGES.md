@@ -1,5 +1,7 @@
 # Changes
 
+## 0.3.0
+
 * Depend on rake 10.2+
 * Update Guard::Puma initialize method to accept only options hash
 * Depend on Guard 2.8+
