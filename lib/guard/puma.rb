@@ -1,11 +1,11 @@
 require "guard"
-require "guard/guard"
+require "guard/plugin"
 require "guard/puma/runner"
 require "rbconfig"
 require "guard/puma/version"
 
 module Guard
-  class Puma < Guard
+  class Puma < Plugin
     attr_reader :options, :runner
 
     def self.default_env
