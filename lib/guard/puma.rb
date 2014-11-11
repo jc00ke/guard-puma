@@ -9,7 +9,7 @@ module Guard
     attr_reader :options, :runner
 
     def self.default_env
-      ENV['RACK_ENV'] || 'development'
+      ENV.fetch('RACK_ENV', 'development')
     end
 
     DEFAULT_OPTIONS = {
