@@ -9,7 +9,7 @@ describe Guard::Puma do
     it "initializes with options" do
       guard
 
-      guard.runner.options[:port].should == 4000
+      expect(guard.runner.options[:port]).to eq(4000)
     end
   end
 
@@ -21,7 +21,7 @@ describe Guard::Puma do
 
       it "uses the value of RACK_ENV" do
         ENV['RACK_ENV'] = 'production'
-        Guard::Puma.default_env.should == 'production'
+        expect(Guard::Puma.default_env).to eq('production')
       end
 
       after do
@@ -31,7 +31,7 @@ describe Guard::Puma do
 
     context "when RACK_ENV is not set" do
       it "defaults to development" do
-        Guard::Puma.default_env.should == 'development'
+        expect(Guard::Puma.default_env).to eq('development')
       end
     end
   end
@@ -40,7 +40,7 @@ describe Guard::Puma do
 
     context 'start on start' do
       it "runs startup" do
-        guard.should_receive(:start).once
+        expect(guard).to receive(:start).once
         guard.start
       end
     end
@@ -49,7 +49,7 @@ describe Guard::Puma do
       let(:options) { { :start_on_start => false } }
 
       it "shows the right message and not run startup" do
-        guard.runner.should_receive(:start).never
+        expect(guard.runner).to receive(:start).never
         guard.start
       end
     end
@@ -58,16 +58,16 @@ describe Guard::Puma do
   describe '#reload' do
 
     before do
-      Guard::UI.should_receive(:info).with('Restarting Puma...')
-      Guard::Notifier.should_receive(:notify).with(/Puma restarting/, hash_including(:image => :pending))
-      guard.runner.stub(:restart).and_return(true)
+      expect(Guard::UI).to receive(:info).with('Restarting Puma...')
+      expect(Guard::Notifier).to receive(:notify).with(/Puma restarting/, hash_including(:image => :pending))
+      allow(guard.runner).to receive(:restart).and_return(true)
     end
 
-    let(:runner_stub) { Guard::PumaRunner.any_instance.stub(:halt) }
+    let(:runner_stub) { allow_any_instance_of(Guard::PumaRunner).to receive(:halt) }
 
     it "restarts and show the message" do
-      Guard::UI.should_receive(:info)
-      Guard::Notifier.should_receive(:notify).with(/Puma restarted/, hash_including(:image => :success))
+      expect(Guard::UI).to receive(:info)
+      expect(Guard::Notifier).to receive(:notify).with(/Puma restarted/, hash_including(:image => :success))
 
       guard.reload
     end
@@ -76,15 +76,15 @@ describe Guard::Puma do
 
   describe '#stop' do
     it "stops correctly" do
-      Guard::Notifier.should_receive(:notify).with('Until next time...', anything)
-      guard.runner.should_receive(:halt).once
+      expect(Guard::Notifier).to receive(:notify).with('Until next time...', anything)
+      expect(guard.runner).to receive(:halt).once
       guard.stop
     end
   end
 
   describe '#run_on_change' do
     it "reloads on change" do
-      guard.should_receive(:reload).once
+      expect(guard).to receive(:reload).once
       guard.run_on_change([])
     end
   end
