@@ -1,5 +1,7 @@
 # Changes
 
+* Update Guardfile to support new options
+
 ## 0.3.1
 
 * Update RSpec to 3.1.0+
