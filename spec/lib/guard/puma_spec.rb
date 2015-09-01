@@ -1,5 +1,6 @@
 require 'spec_helper'
 require 'guard/puma'
+require 'guard/compat/test/helper'
 
 describe Guard::Puma do
   let(:guard) { Guard::Puma.new(options) }

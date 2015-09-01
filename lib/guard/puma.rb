@@ -3,6 +3,7 @@ require "guard/plugin"
 require "guard/puma/runner"
 require "rbconfig"
 require "guard/puma/version"
+require "guard/compat/plugin"
 
 module Guard
   class Puma < Plugin
