@@ -14,6 +14,7 @@ Gem::Specification.new do |gem|
   gem.require_paths = ["lib"]
   gem.version       = Guard::PumaVersion::VERSION
   gem.add_dependency              "guard", "~> 2.8"
+  gem.add_dependency              "guard-compat", "~> 1.0"
   gem.add_dependency              "puma"
   gem.add_development_dependency  "rake", "~> 10.2"
   gem.add_development_dependency  "rspec", "~> 3.1.0"
