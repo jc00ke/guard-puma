@@ -1,6 +1,7 @@
 # Changes
 
 * Update Guardfile to support new options
+* Let --config take precedence over default options
 
 ## 0.3.1
 
