@@ -15,13 +15,19 @@ module Guard
       @quiet = options.delete(:quiet) { true }
       @options = options
 
-      puma_options = {
-        '--port' => options[:port],
-        '--control-token' => @control_token,
-        '--control' => "tcp://#{@control_url}",
-        '--environment' => options[:environment]
-      }
-      [:config, :bind, :threads].each do |opt|
+      if options[:config]
+        puma_options = {
+          '--config' => options[:config]
+        }
+      else
+        puma_options = {
+          '--port' => options[:port],
+          '--control-token' => @control_token,
+          '--control' => "tcp://#{@control_url}",
+          '--environment' => options[:environment]
+        }
+      end
+      [:bind, :threads].each do |opt|
         puma_options["--#{opt}"] = options[opt] if options[opt]
       end
       puma_options = puma_options.to_a.flatten
@@ -46,7 +52,7 @@ module Guard
     end
 
     private
-    
+
     def run_puma_command!(cmd)
       Net::HTTP.get build_uri(cmd)
       return true

@@ -5,7 +5,7 @@ describe Guard::PumaRunner do
   let(:runner) { Guard::PumaRunner.new(options) }
   let(:environment) { 'development' }
   let(:port) { 4000 }
-  
+
   let(:default_options) { { :environment => environment, :port => port } }
   let(:options) { default_options }
 
@@ -14,7 +14,7 @@ describe Guard::PumaRunner do
       expect(runner.options).to eq(options)
     end
   end
-  
+
   %w(halt restart).each do |cmd|
     describe cmd do
       before do
@@ -27,7 +27,7 @@ describe Guard::PumaRunner do
       end
     end
   end
-  
+
 
   describe '#sleep_time' do
     let(:timeout) { 30 }
@@ -47,6 +47,13 @@ describe Guard::PumaRunner do
       let(:path) { "/tmp/elephants" }
       it "adds path to command" do
         expect(runner.cmd_opts).to match("--config #{path}")
+      end
+
+      context "and additional options" do
+        let(:options) {{ :config => path, :port => "4000", quiet: false }}
+        it "assumes options are set in config" do
+          expect(runner.cmd_opts).to eq("--config #{path}")
+        end
       end
     end
 
