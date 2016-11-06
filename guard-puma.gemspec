@@ -13,11 +13,11 @@ Gem::Specification.new do |gem|
   gem.name          = "guard-puma"
   gem.require_paths = ["lib"]
   gem.version       = Guard::PumaVersion::VERSION
-  gem.add_dependency              "guard", "~> 2.8"
-  gem.add_dependency              "guard-compat", "~> 1.0"
-  gem.add_dependency              "puma"
-  gem.add_development_dependency  "rake", "~> 10.2"
-  gem.add_development_dependency  "rspec", "~> 3.1.0"
-  gem.add_development_dependency  "guard-rspec", "~> 4.3.0"
+  gem.add_dependency              "guard", "~> 2.14"
+  gem.add_dependency              "guard-compat", "~> 1.2"
+  gem.add_dependency              "puma", "~> 3.6"
+  gem.add_development_dependency  "rake", "~> 10.4"
+  gem.add_development_dependency  "rspec", "~> 3.5.0"
+  gem.add_development_dependency  "guard-rspec", "~> 4.7.0"
   gem.add_development_dependency  "pry"
 end
