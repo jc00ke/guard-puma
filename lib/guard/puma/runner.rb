@@ -15,12 +15,14 @@ module Guard
       @quiet = options.delete(:quiet) { true }
       @options = options
 
-      if options[:config]
-        puma_options = {
-          '--config' => options[:config]
+      puma_options = if options[:config]
+        {
+          '--config' => options[:config],
+          '--control-token' => @control_token,
+          '--control' => "tcp://#{@control_url}",
         }
       else
-        puma_options = {
+        {
           '--port' => options[:port],
           '--control-token' => @control_token,
           '--control' => "tcp://#{@control_url}",
