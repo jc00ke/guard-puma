@@ -1,5 +1,13 @@
 # Changes
 
+## 0.3.3
+
+* Update deps
+* Kill testing Ruby < 2.2.5
+* Fix control when using `--config`
+
+## 0.3.2
+
 * Update Guardfile to support new options
 * Let --config take precedence over default options
 
