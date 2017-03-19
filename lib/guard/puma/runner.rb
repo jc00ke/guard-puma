@@ -20,6 +20,7 @@ module Guard
           '--config' => options[:config],
           '--control-token' => @control_token,
           '--control' => "tcp://#{@control_url}",
+          '--environment' => options[:environment]
         }
       else
         {

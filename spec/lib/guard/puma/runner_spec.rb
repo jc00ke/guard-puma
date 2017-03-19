@@ -45,16 +45,18 @@ describe Guard::PumaRunner do
     context "with config" do
       let(:options) {{ :config => path }}
       let(:path) { "/tmp/elephants" }
+      let(:environment) { "special_dev" }
       it "adds path to command" do
         expect(runner.cmd_opts).to match("--config #{path}")
       end
 
       context "and additional options" do
-        let(:options) {{ :config => path, :port => "4000", quiet: false }}
+        let(:options) {{ :config => path, :port => "4000", quiet: false, :environment => environment }}
         it "assumes options are set in config" do
           expect(runner.cmd_opts).to match("--config #{path}")
           expect(runner.cmd_opts).to match("--control-token pumarules")
           expect(runner.cmd_opts).to match("--control tcp")
+          expect(runner.cmd_opts).to match("--environment #{environment}")
         end
       end
     end
