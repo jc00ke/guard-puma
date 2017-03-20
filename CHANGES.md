@@ -1,5 +1,9 @@
 # Changes
 
+## 03.4
+
+* Respect the environment when using a config file. Fixes #21
+
 ## 0.3.3
 
 * Update deps
