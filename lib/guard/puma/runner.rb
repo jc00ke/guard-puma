@@ -43,11 +43,18 @@ module Guard
     end
 
     def halt
-      run_puma_command!("halt")
+      Net::HTTP.get build_uri('halt')
+      # server may not have been stopped correctly, but we are halting so who cares.
+      return true
     end
 
     def restart
-      run_puma_command!("restart")
+      if run_puma_command!('restart')
+        return true
+      else
+        # server may not have been started correctly, or crashed. Let's try to start it.
+        return start
+      end
     end
 
     def sleep_time
@@ -70,4 +77,3 @@ module Guard
 
   end
 end
-
