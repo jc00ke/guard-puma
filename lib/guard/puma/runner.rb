@@ -1,4 +1,5 @@
 require 'net/http'
+require 'securerandom'
 
 module Guard
   class PumaRunner
@@ -8,7 +9,7 @@ module Guard
     attr_reader :options, :control_url, :control_token, :cmd_opts
 
     def initialize(options)
-      @control_token = (options.delete(:control_token) || 'pumarules')
+      @control_token = (options.delete(:control_token) || SecureRandom.hex(32))
       @control = "0.0.0.0"
       @control_port = (options.delete(:control_port) || '9293')
       @control_url = "#{@control}:#{@control_port}"
