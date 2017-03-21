@@ -1,6 +1,10 @@
 # Changes
 
-## 03.4
+## 0.3.5
+
+* If puma crashed don't fail when trying to restart. Fixes #22
+
+## 0.3.4
 
 * Respect the environment when using a config file. Fixes #21
 
