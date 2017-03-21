@@ -44,20 +44,17 @@ module Guard
 
     def halt
       Net::HTTP.get build_uri('halt')
-
-      return true
-    rescue Errno::ECONNREFUSED
-      # server may not have been started correctly, but we are halting so who cares.
+      # server may not have been stopped correctly, but we are halting so who cares.
       return true
     end
 
     def restart
-      Net::HTTP.get build_uri('restart')
-
-      return true
-    rescue Errno::ECONNREFUSED
-      # server may not have been started correctly, or crashed. Let's try to start it.
-      return start
+      if run_puma_command!('restart')
+        return true
+      else
+        # server may not have been started correctly, or crashed. Let's try to start it.
+        return start
+      end
     end
 
     def sleep_time
@@ -66,10 +63,17 @@ module Guard
 
     private
 
+    def run_puma_command!(cmd)
+      Net::HTTP.get build_uri(cmd)
+      return true
+    rescue Errno::ECONNREFUSED => e
+      # server may not have been started correctly.
+      false
+    end
+
     def build_uri(cmd)
       URI "http://#{control_url}/#{cmd}?token=#{control_token}"
     end
 
   end
 end
-
