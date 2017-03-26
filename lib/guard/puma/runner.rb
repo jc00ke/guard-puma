@@ -9,7 +9,7 @@ module Guard
 
     def initialize(options)
       @control_token = (options.delete(:control_token) || 'pumarules')
-      @control = "0.0.0.0"
+      @control = "localhost"
       @control_port = (options.delete(:control_port) || '9293')
       @control_url = "#{@control}:#{@control_port}"
       @quiet = options.delete(:quiet) { true }
