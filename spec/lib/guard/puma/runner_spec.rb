@@ -54,7 +54,7 @@ describe Guard::PumaRunner do
         let(:options) {{ :config => path, :port => "4000", quiet: false, :environment => environment }}
         it "assumes options are set in config" do
           expect(runner.cmd_opts).to match("--config #{path}")
-          expect(runner.cmd_opts).to match("--control-token pumarules")
+          expect(runner.cmd_opts).to match(/--control-token [0-9a-f]{10,}/)
           expect(runner.cmd_opts).to match("--control tcp")
           expect(runner.cmd_opts).to match("--environment #{environment}")
         end
