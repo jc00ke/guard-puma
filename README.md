@@ -54,3 +54,11 @@ end
 1. Commit your changes (`git commit -am 'Added some feature'`)
 1. Push to the branch (`git push origin my-new-feature`)
 1. Create new Pull Request
+
+## Releasing
+
+1. Update [changelog](CHANGES.md)
+1. Bump version in `lib/guard/puma/version.rb`
+1. Commit
+1. `gem build guard-puma.gemspec`
+1. `gem push guard-puma-VERSION.gem`

@@ -1,5 +1,9 @@
 # Changes
 
+## 0.3.6
+
+* Use a secure random token by default for the control token. Fixes #23
+
 ## 0.3.5
 
 * If puma crashed don't fail when trying to restart. Fixes #22
