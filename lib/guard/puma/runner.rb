@@ -40,7 +40,11 @@ module Guard
     end
 
     def start
-      system %{sh -c 'cd #{Dir.pwd} && puma #{cmd_opts} &'}
+      if Gem.win_platform?
+        system %{cd "#{Dir.pwd}" && start "" /B cmd /C "puma #{cmd_opts}"}
+      else
+        system %{sh -c 'cd #{Dir.pwd} && puma #{cmd_opts} &'}
+      end
     end
 
     def halt
