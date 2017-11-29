@@ -40,7 +40,8 @@ module Guard
     end
 
     def start
-      if Gem.win_platform?
+      if ENV['SHELL'].nil? && !ENV['COMSPEC'].nil?
+        # windows command prompt
         system %{cd "#{Dir.pwd}" && start "" /B cmd /C "puma #{cmd_opts}"}
       else
         system %{sh -c 'cd #{Dir.pwd} && puma #{cmd_opts} &'}
