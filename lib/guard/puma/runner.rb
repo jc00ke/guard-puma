@@ -40,6 +40,7 @@ module Guard
     end
 
     def start
+      return start_windows_cmd if in_windows_cmd?
       system %{sh -c 'cd #{Dir.pwd} && puma #{cmd_opts} &'}
     end
 
@@ -76,5 +77,13 @@ module Guard
       URI "http://#{control_url}/#{cmd}?token=#{control_token}"
     end
 
+    def start_windows_cmd
+      system %{cd "#{Dir.pwd}" && start "" /B cmd /C "puma #{cmd_opts}"}
+    end
+  
+    def in_windows_cmd?
+      ENV['SHELL'].nil? && !ENV['COMSPEC'].nil?
+    end
+  
   end
 end
