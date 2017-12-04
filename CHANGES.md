@@ -1,5 +1,7 @@
 # Changes
 
+* Support Windows with custom start command. Via #29
+
 ## 0.3.6
 
 * Use a secure random token by default for the control token. Fixes #23
