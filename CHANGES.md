@@ -1,5 +1,7 @@
 # Changes
 
+## 0.4.0
+
 * Support Windows with custom start command. Via #29
 
 ## 0.3.6
