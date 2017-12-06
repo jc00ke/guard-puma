@@ -1,5 +1,6 @@
 require 'spec_helper'
 require 'guard/puma/runner'
+require 'pry'
 
 describe Guard::PumaRunner do
   let(:runner) { Guard::PumaRunner.new(options) }
@@ -24,6 +25,31 @@ describe Guard::PumaRunner do
       it "#{cmd}s" do
         expect(Net::HTTP).to receive(:get).with(uri).once
         runner.send(cmd.intern)
+      end
+    end
+  end
+
+  describe '#start' do
+    context "when on Windows" do
+      before do
+        allow(runner).to receive(:in_windows_cmd?).and_return(true)
+        allow(runner).to receive(:windows_start_cmd).and_return("echo 'windows'")
+      end
+
+      it "runs the Windows command" do
+        expect(Kernel).to receive(:system).with("echo 'windows'")
+        runner.start
+      end
+    end
+
+    context "when on *nix" do
+      before do
+        allow(runner).to receive(:nix_start_cmd).and_return("echo 'nix'")
+      end
+
+      it "runs the *nix command" do
+        expect(Kernel).to receive(:system).with("echo 'nix'")
+        runner.start
       end
     end
   end
