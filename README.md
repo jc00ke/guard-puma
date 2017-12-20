@@ -44,6 +44,7 @@ end
 * `:control_token` is the token to use as authentication for the control server(optional)
 * `:control_port` is the port to use for the control server(optional)
 * `:threads` is the min:max number of threads to use. Defaults to 0:16 (optional)
+* `:notifications` is the list of notification types that will be sent. Defaults to `[:restarting, :restarted, :not_restarted, :stopped]` (optional)
 
 ## Contributing
 
