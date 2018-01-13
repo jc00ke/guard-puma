@@ -1,5 +1,9 @@
 # Changes
 
+## 0.4.1
+
+* Improve notifications. Via #30
+
 ## 0.4.0
 
 * Support Windows with custom start command. Via #29
