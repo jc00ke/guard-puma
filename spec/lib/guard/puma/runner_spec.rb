@@ -1,6 +1,5 @@
 require 'spec_helper'
 require 'guard/puma/runner'
-require 'pry'
 
 describe Guard::PumaRunner do
   let(:runner) { Guard::PumaRunner.new(options) }
