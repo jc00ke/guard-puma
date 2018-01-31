@@ -1,5 +1,14 @@
 # Changes
 
+## master
+
+* Add `pumactl` option
+* Improve `guard-compat` using (https://github.com/guard/guard-compat#migrating-your-api-calls)
+* Don't notify about start when no start
+* Don't stop Puma if it was started not by Guard
+* Remove unused `pry` dependency
+* Update versions of dependencies
+
 ## 0.4.1
 
 * Improve notifications. Via #30
