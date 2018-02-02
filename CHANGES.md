@@ -1,5 +1,7 @@
 # Changes
 
+## master
+
 ## 0.4.1
 
 * Improve notifications. Via #30
