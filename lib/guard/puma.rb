@@ -17,6 +17,7 @@ module Guard
       :start_on_start => true,
       :force_run => false,
       :timeout => 20,
+      :restart_timeout => 1,
       :debugger => false,
       :notifications => %i[restarting restarted not_restarted stopped]
     }
@@ -26,6 +27,7 @@ module Guard
       @options = DEFAULT_OPTIONS.merge(options)
       @options[:port] = nil if @options.key?(:config)
       @runner = ::Guard::PumaRunner.new(@options)
+      @last_restarted = Time.now
     end
 
     def start
@@ -38,6 +40,8 @@ module Guard
     end
 
     def reload
+      return if Time.now - @last_restarted < options[:restart_timeout]
+      @last_restarted = Time.now
       Compat::UI.info "Restarting Puma..."
       if options[:notifications].include?(:restarting)
         Compat::UI.notify(

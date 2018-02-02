@@ -100,15 +100,19 @@ describe Guard::Puma do
   end
 
   describe "#reload" do
+    let(:zero_restart_timeout) { { restart_timeout: 0 } }
+    let(:options) { zero_restart_timeout }
+
     before do
-      expect(Guard::Compat::UI).to receive(:info).with('Restarting Puma...')
-      expect(Guard::Compat::UI).to receive(:info).with('Puma restarted')
       allow(guard.runner).to receive(:restart).and_return(true)
       allow_any_instance_of(Guard::PumaRunner).to receive(:halt)
     end
 
     context "with default options" do
       it "restarts and show the message" do
+        expect(Guard::Compat::UI).to receive(:info).with('Restarting Puma...')
+        expect(Guard::Compat::UI).to receive(:info).with('Puma restarted')
+
         expect(Guard::Compat::UI).to receive(:notify).with(
           /restarting on port 4000/,
           hash_including(title: "Restarting Puma...", image: :pending)
@@ -124,9 +128,12 @@ describe Guard::Puma do
     end
 
     context "with config option set" do
-      let(:options) { { config: "config.rb" } }
+      let(:options) { { config: "config.rb" }.merge!(zero_restart_timeout) }
 
       it "restarts and show the message" do
+        expect(Guard::Compat::UI).to receive(:info).with('Restarting Puma...')
+        expect(Guard::Compat::UI).to receive(:info).with('Puma restarted')
+
         expect(Guard::Compat::UI).to receive(:notify).with(
           /restarting/,
           hash_including(title: "Restarting Puma...", image: :pending)
@@ -142,9 +149,13 @@ describe Guard::Puma do
     end
 
     context "with custom :notifications option" do
-      let(:options) { { notifications: [:restarted] } }
+      let(:options) do
+        { notifications: [:restarted] }.merge!(zero_restart_timeout)
+      end
 
       it "restarts and show the message only about restarted" do
+        allow(Guard::Compat::UI).to receive(:info)
+
         expect(Guard::Compat::UI).not_to receive(:notify).with(/restarting/)
         expect(Guard::Compat::UI).to receive(:notify)
           .with(/restarted/, kind_of(Hash))
@@ -154,15 +165,36 @@ describe Guard::Puma do
     end
 
     context "with empty :notifications option" do
-      let(:options) { { notifications: [] } }
+      let(:options) { { notifications: [] }.merge!(zero_restart_timeout) }
 
       it "restarts and doesn't show the message" do
+        allow(Guard::Compat::UI).to receive(:info)
+
         expect(Guard::Compat::UI).not_to receive(:notify)
 
         guard.reload
       end
     end
 
+    context "with :restart_timeout option" do
+      let(:restart_timeout) { 1.0 }
+      let(:options) { { restart_timeout: restart_timeout } }
+
+      before { sleep restart_timeout }
+
+      it "doesn't restarts during restart timeout" do
+        allow(Guard::Compat::UI).to receive(:info)
+        allow(Guard::Compat::UI).to receive(:notify)
+
+        expect(guard.runner).to receive(:restart).twice
+
+        guard.reload
+        sleep restart_timeout / 2
+        guard.reload
+        sleep restart_timeout
+        guard.reload
+      end
+    end
   end
 
   describe "#stop" do

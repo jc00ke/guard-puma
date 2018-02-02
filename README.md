@@ -39,6 +39,7 @@ end
 * `:quiet` runs the server in quiet mode, suppressing output (default `true`).
 * `:debugger` runs the server with the debugger enabled (default `false`). Required ruby-debug gem.
 * `:timeout` waits this number of seconds when restarting the Puma server before reporting there's a problem (default `20`).
+* `:restart_timeout` waits this number of seconds before the next restarting the Puma server (default `1`).
 * `:config` is the path to the Puma config file (optional)
 * `:bind` is URI to bind to (tcp:// and unix:// only) (optional)
 * `:control_token` is the token to use as authentication for the control server(optional)
