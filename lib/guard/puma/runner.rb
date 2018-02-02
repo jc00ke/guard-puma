@@ -10,9 +10,8 @@ module Guard
 
     def initialize(options)
       @control_token = options.delete(:control_token) { |_| ::Puma::Configuration.random_token }
-      @control = "localhost"
       @control_port = (options.delete(:control_port) || '9293')
-      @control_url = "#{@control}:#{@control_port}"
+      @control_url = "localhost:#{@control_port}"
       @quiet = options.delete(:quiet) { true }
       @options = options
 
