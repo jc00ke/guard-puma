@@ -11,6 +11,7 @@ module Guard
     end
 
     DEFAULT_OPTIONS = {
+      :pumactl => false,
       :port => 4000,
       :environment => default_env,
       :start_on_start => true,

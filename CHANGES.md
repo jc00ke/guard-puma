@@ -2,6 +2,7 @@
 
 ## master
 
+* Add `:pumactl` option
 * Don't stop Puma if it was not started by Guard
 * Don't notify about start when no start
 * Improve `guard-compat` using (https://github.com/guard/guard-compat#migrating-your-api-calls)
