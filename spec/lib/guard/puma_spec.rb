@@ -184,6 +184,25 @@ describe Guard::Puma do
         guard.stop
       end
     end
+
+    context "start on start" do
+      it "stops correctly with notification" do
+        expect(guard.runner).to receive(:halt).once
+        expect(Guard::Compat::UI).to receive(:notify)
+          .with('Until next time...', anything)
+        guard.stop
+      end
+    end
+
+    context "no start on start" do
+      let(:options) { { start_on_start: false } }
+
+      it "doesn't show the message and doesn't halt" do
+        expect(guard.runner).not_to receive(:halt)
+        expect(Guard::Compat::UI).not_to receive(:notify)
+        guard.stop
+      end
+    end
   end
 
   describe "#run_on_changes" do

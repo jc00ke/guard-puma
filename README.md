@@ -33,7 +33,7 @@ end
 
 * `:port` is the port number to run on (default `4000`)
 * `:environment` is the environment to use (default `development`)
-* `:start_on_start` will start the server when starting Guard (default `true`)
+* `:start_on_start` will start the server when starting Guard and stop the server when reloading/stopping Guard (default `true`)
 * `:force_run` kills any process that's holding open the listen port before attempting to (re)start Puma (default `false`).
 * `:daemon` runs the server as a daemon, without any output to the terminal that ran `guard` (default `false`).
 * `:quiet` runs the server in quiet mode, suppressing output (default `true`).

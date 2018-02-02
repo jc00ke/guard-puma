@@ -64,6 +64,7 @@ module Guard
     end
 
     def stop
+      return unless options[:start_on_start]
       if options[:notifications].include?(:stopped)
         Compat::UI.notify(
           "Until next time...",
