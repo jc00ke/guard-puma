@@ -6,7 +6,7 @@ describe Guard::PumaRunner do
   let(:environment) { 'development' }
   let(:port) { 4000 }
 
-  let(:default_options) { { :environment => environment, :port => port } }
+  let(:default_options) { { environment: environment, port: port } }
   let(:options) { default_options }
 
   describe "#initialize" do
@@ -15,7 +15,7 @@ describe Guard::PumaRunner do
     end
   end
 
-  %w(halt restart).each do |cmd|
+  %w[halt restart].each do |cmd|
     describe cmd do
       before do
         allow(runner).to receive(:build_uri).with(cmd).and_return(uri)
@@ -28,7 +28,7 @@ describe Guard::PumaRunner do
     end
   end
 
-  describe '#start' do
+  describe "#start" do
     context "when on Windows" do
       before do
         allow(runner).to receive(:in_windows_cmd?).and_return(true)

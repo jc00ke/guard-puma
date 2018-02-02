@@ -57,16 +57,15 @@ describe Guard::Puma do
   end
 
   describe '#start' do
-
-    context 'start on start' do
+    context "start on start" do
       it "runs startup" do
         expect(guard).to receive(:start).once
         guard.start
       end
     end
 
-    context 'no start on start' do
-      let(:options) { { :start_on_start => false } }
+    context "no start on start" do
+      let(:options) { { start_on_start: false } }
 
       it "shows the right message and not run startup" do
         expect(guard.runner).to receive(:start).never
@@ -87,7 +86,7 @@ describe Guard::Puma do
       end
 
       context "when config option set" do
-        let(:options) { { :config => 'config.rb' } }
+        let(:options) { { config: 'config.rb' } }
 
         it "doesn't contain port" do
           expect(Guard::UI).to receive(:info).with(/starting/)
@@ -97,26 +96,24 @@ describe Guard::Puma do
     end
   end
 
-  describe '#reload' do
-
+  describe "#reload" do
     before do
       expect(Guard::UI).to receive(:info).with('Restarting Puma...')
       expect(Guard::UI).to receive(:info).with('Puma restarted')
       allow(guard.runner).to receive(:restart).and_return(true)
+      allow_any_instance_of(Guard::PumaRunner).to receive(:halt)
     end
-
-    let(:runner_stub) { allow_any_instance_of(Guard::PumaRunner).to receive(:halt) }
 
     context "with default options" do
       it "restarts and show the message" do
         expect(Guard::Notifier).to receive(:notify).with(
           /restarting on port 4000/,
-          hash_including(:title => "Restarting Puma...", :image => :pending)
+          hash_including(title: "Restarting Puma...", image: :pending)
         )
 
         expect(Guard::Notifier).to receive(:notify).with(
           "Puma restarted on port 4000.",
-          hash_including(:title => "Puma restarted!", :image => :success)
+          hash_including(title: "Puma restarted!", image: :success)
         )
 
         guard.reload
@@ -124,17 +121,17 @@ describe Guard::Puma do
     end
 
     context "with config option set" do
-      let(:options) { { :config => "config.rb" } }
+      let(:options) { { config: "config.rb" } }
 
       it "restarts and show the message" do
         expect(Guard::Notifier).to receive(:notify).with(
           /restarting/,
-          hash_including(:title => "Restarting Puma...", :image => :pending)
+          hash_including(title: "Restarting Puma...", image: :pending)
         )
 
         expect(Guard::Notifier).to receive(:notify).with(
           "Puma restarted.",
-          hash_including(:title => "Puma restarted!", :image => :success)
+          hash_including(title: "Puma restarted!", image: :success)
         )
 
         guard.reload
@@ -142,7 +139,7 @@ describe Guard::Puma do
     end
 
     context "with custom :notifications option" do
-      let(:options) { { :notifications => [:restarted] } }
+      let(:options) { { notifications: [:restarted] } }
 
       it "restarts and show the message only about restarted" do
         expect(Guard::Notifier).not_to receive(:notify).with(/restarting/)
@@ -153,7 +150,7 @@ describe Guard::Puma do
     end
 
     context "with empty :notifications option" do
-      let(:options) { { :notifications => [] } }
+      let(:options) { { notifications: [] } }
 
       it "restarts and doesn't show the message" do
         expect(Guard::Notifier).not_to receive(:notify)
@@ -164,7 +161,7 @@ describe Guard::Puma do
 
   end
 
-  describe '#stop' do
+  describe "#stop" do
     context "with default options" do
       it "stops correctly with notification" do
         expect(Guard::Notifier).to receive(:notify).with('Until next time...', anything)
@@ -174,7 +171,7 @@ describe Guard::Puma do
     end
 
     context "with custom :notifications option" do
-      let(:options) { { :notifications => [] } }
+      let(:options) { { notifications: [] } }
 
       it "stops correctly without notification" do
         expect(Guard::Notifier).not_to receive(:notify)
@@ -184,7 +181,7 @@ describe Guard::Puma do
     end
   end
 
-  describe '#run_on_changes' do
+  describe "#run_on_changes" do
     it "reloads on change" do
       expect(guard).to receive(:reload).once
       guard.run_on_changes([])
