@@ -28,11 +28,12 @@ module Guard
     end
 
     def start
+      return unless options[:start_on_start]
       server = options[:server] ? "#{options[:server]} and " : ""
       Compat::UI.info(
         "Puma starting#{port_text} in #{server}#{options[:environment]} environment."
       )
-      runner.start if options[:start_on_start]
+      runner.start
     end
 
     def reload

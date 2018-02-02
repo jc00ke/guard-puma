@@ -2,6 +2,7 @@
 
 ## master
 
+* Don't notify about start when no start
 * Improve `guard-compat` using (https://github.com/guard/guard-compat#migrating-your-api-calls)
 * Remove unused `pry` dependency
 * Update versions of dependencies

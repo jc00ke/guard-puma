@@ -68,8 +68,9 @@ describe Guard::Puma do
     context "no start on start" do
       let(:options) { { start_on_start: false } }
 
-      it "shows the right message and not run startup" do
-        expect(guard.runner).to receive(:start).never
+      it "doesn't show the message and not run startup" do
+        expect(guard.runner).not_to receive(:start)
+        expect(Guard::Compat::UI).not_to receive(:info).with(/Puma starting/)
         guard.start
       end
     end
