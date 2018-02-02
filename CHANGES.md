@@ -2,6 +2,9 @@
 
 ## master
 
+* Remove unused `pry` dependency
+* Update versions of dependencies
+
 ## 0.4.1
 
 * Improve notifications. Via #30
