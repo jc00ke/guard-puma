@@ -59,7 +59,8 @@ describe Guard::Puma do
   describe '#start' do
     context "start on start" do
       it "runs startup" do
-        expect(guard).to receive(:start).once
+        expect(guard.runner).to receive(:start).once
+        expect(Guard::Compat::UI).to receive(:info).with(/Puma starting/)
         guard.start
       end
     end
@@ -80,7 +81,8 @@ describe Guard::Puma do
 
       context "when no config option set" do
         it "contains port" do
-          expect(Guard::UI).to receive(:info).with(/starting on port 4000/)
+          expect(Guard::Compat::UI).to receive(:info)
+            .with(/starting on port 4000/)
           guard.start
         end
       end
@@ -89,7 +91,7 @@ describe Guard::Puma do
         let(:options) { { config: 'config.rb' } }
 
         it "doesn't contain port" do
-          expect(Guard::UI).to receive(:info).with(/starting/)
+          expect(Guard::Compat::UI).to receive(:info).with(/starting/)
           guard.start
         end
       end
@@ -98,20 +100,20 @@ describe Guard::Puma do
 
   describe "#reload" do
     before do
-      expect(Guard::UI).to receive(:info).with('Restarting Puma...')
-      expect(Guard::UI).to receive(:info).with('Puma restarted')
+      expect(Guard::Compat::UI).to receive(:info).with('Restarting Puma...')
+      expect(Guard::Compat::UI).to receive(:info).with('Puma restarted')
       allow(guard.runner).to receive(:restart).and_return(true)
       allow_any_instance_of(Guard::PumaRunner).to receive(:halt)
     end
 
     context "with default options" do
       it "restarts and show the message" do
-        expect(Guard::Notifier).to receive(:notify).with(
+        expect(Guard::Compat::UI).to receive(:notify).with(
           /restarting on port 4000/,
           hash_including(title: "Restarting Puma...", image: :pending)
         )
 
-        expect(Guard::Notifier).to receive(:notify).with(
+        expect(Guard::Compat::UI).to receive(:notify).with(
           "Puma restarted on port 4000.",
           hash_including(title: "Puma restarted!", image: :success)
         )
@@ -124,12 +126,12 @@ describe Guard::Puma do
       let(:options) { { config: "config.rb" } }
 
       it "restarts and show the message" do
-        expect(Guard::Notifier).to receive(:notify).with(
+        expect(Guard::Compat::UI).to receive(:notify).with(
           /restarting/,
           hash_including(title: "Restarting Puma...", image: :pending)
         )
 
-        expect(Guard::Notifier).to receive(:notify).with(
+        expect(Guard::Compat::UI).to receive(:notify).with(
           "Puma restarted.",
           hash_including(title: "Puma restarted!", image: :success)
         )
@@ -142,8 +144,9 @@ describe Guard::Puma do
       let(:options) { { notifications: [:restarted] } }
 
       it "restarts and show the message only about restarted" do
-        expect(Guard::Notifier).not_to receive(:notify).with(/restarting/)
-        expect(Guard::Notifier).to receive(:notify).with(/restarted/, kind_of(Hash))
+        expect(Guard::Compat::UI).not_to receive(:notify).with(/restarting/)
+        expect(Guard::Compat::UI).to receive(:notify)
+          .with(/restarted/, kind_of(Hash))
 
         guard.reload
       end
@@ -153,7 +156,7 @@ describe Guard::Puma do
       let(:options) { { notifications: [] } }
 
       it "restarts and doesn't show the message" do
-        expect(Guard::Notifier).not_to receive(:notify)
+        expect(Guard::Compat::UI).not_to receive(:notify)
 
         guard.reload
       end
@@ -164,7 +167,8 @@ describe Guard::Puma do
   describe "#stop" do
     context "with default options" do
       it "stops correctly with notification" do
-        expect(Guard::Notifier).to receive(:notify).with('Until next time...', anything)
+        expect(Guard::Compat::UI).to receive(:notify)
+          .with('Until next time...', anything)
         expect(guard.runner).to receive(:halt).once
         guard.stop
       end
@@ -174,7 +178,7 @@ describe Guard::Puma do
       let(:options) { { notifications: [] } }
 
       it "stops correctly without notification" do
-        expect(Guard::Notifier).not_to receive(:notify)
+        expect(Guard::Compat::UI).not_to receive(:notify)
         expect(guard.runner).to receive(:halt).once
         guard.stop
       end
