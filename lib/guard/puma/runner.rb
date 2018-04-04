@@ -47,11 +47,7 @@ module Guard
     end
 
     def halt
-      if pumactl
-        Kernel.system build_command('halt')
-      else
-        Net::HTTP.get build_uri('halt')
-      end
+      run_puma_command!('halt')
       # server may not have been stopped correctly, but we are halting so who cares.
       return true
     end
