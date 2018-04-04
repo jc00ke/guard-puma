@@ -17,24 +17,26 @@ module Guard
       @options = options
 
       puma_options = {
-        (pumactl ? '--config-file' : '--config') => options[:config],
-        '--control-token' => @control_token,
-        (pumactl ? '--control-url' : '--control') => "tcp://#{@control_url}"
+        puma_options_key(:config) => options[:config],
+        puma_options_key(:control_token) => @control_token,
+        puma_options_key(:control_url) => "tcp://#{@control_url}"
       }
       if options[:config]
         puma_options['--config'] = options[:config]
       else
         puma_options['--port'] = options[:port]
       end
-      %i[bind threads environment].each do |opt|
-        next unless options[opt]
-        if pumactl
-          next Compat::UI.warning(
-            "`#{opt}` option is not compatible with `pumactl` option"
-          )
+      %i[bind threads environment]
+        .select { |opt| options[opt] }
+        .each do |opt|
+          if pumactl
+            Compat::UI.warning(
+              "`#{opt}` option is not compatible with `pumactl` option"
+            )
+          else
+            puma_options["--#{opt}"] = options[opt]
+          end
         end
-        puma_options["--#{opt}"] = options[opt]
-      end
       puma_options = puma_options.to_a.flatten
       puma_options << '--quiet' if @quiet
       @cmd_opts = puma_options.join ' '
@@ -68,6 +70,24 @@ module Guard
     end
 
     private
+
+    PUMA_OPTIONS_KEYS_BY_PUMACTL = {
+      true => {
+        config:      '--config-file',
+        control_url: '--control-url'
+      }.freeze,
+      false => {
+        config:      '--config',
+        control_url: '--control'
+      }.freeze
+    }.freeze
+
+    private_constant :PUMA_OPTIONS_KEYS_BY_PUMACTL
+
+    def puma_options_key(key)
+      keys = PUMA_OPTIONS_KEYS_BY_PUMACTL[@pumactl]
+      keys.fetch(key) { |k| "--#{k.to_s.tr('_', '-')}" }
+    end
 
     def run_puma_command!(cmd)
       if pumactl

@@ -40,7 +40,7 @@ module Guard
     end
 
     def reload
-      return if Time.now - @last_restarted < options[:restart_timeout]
+      return if (Time.now - @last_restarted) < options[:restart_timeout]
       @last_restarted = Time.now
       Compat::UI.info "Restarting Puma..."
       if options[:notifications].include?(:restarting)
