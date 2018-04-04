@@ -20,11 +20,11 @@ describe Guard::PumaRunner do
       context "without pumactl" do
         let(:options) { { pumactl: false } }
 
-        let(:uri) do
+        let(:uri) {
           URI(
             "http://#{runner.control_url}/#{cmd}?token=#{runner.control_token}"
           )
-        end
+        }
 
         it "#{cmd}s" do
           expect(Net::HTTP).to receive(:get).with(uri).once
@@ -39,9 +39,9 @@ describe Guard::PumaRunner do
           allow(runner).to receive(:in_windows_cmd?).and_return(false)
         end
 
-        let(:command) do
+        let(:command) {
           %(sh -c 'cd #{Dir.pwd} && pumactl #{runner.cmd_opts} #{cmd} ')
-        end
+        }
 
         it "#{cmd}s" do
           expect(Kernel).to receive(:system).with(command).once
@@ -101,12 +101,12 @@ describe Guard::PumaRunner do
         end
 
         context "and additional options" do
-          let(:options) do
+          let(:options) {
             {
               config: path, port: "4000",
               quiet: false, environment: environment
             }
-          end
+          }
 
           it "assumes options are set in config" do
             expect(runner.cmd_opts).to match("--config #{path}")
@@ -125,13 +125,13 @@ describe Guard::PumaRunner do
         end
 
         context "and additional options" do
-          let(:options) do
+          let(:options) {
             {
               pumactl: true,
               config: path, port: "4000",
               quiet: false
             }
-          end
+          }
 
           it "assumes options are set in config" do
             expect(runner.cmd_opts).to match("--config-file #{path}")

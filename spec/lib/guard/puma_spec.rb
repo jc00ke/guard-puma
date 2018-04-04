@@ -149,9 +149,9 @@ describe Guard::Puma do
     end
 
     context "with custom :notifications option" do
-      let(:options) do
+      let(:options) {
         { notifications: [:restarted] }.merge!(zero_restart_timeout)
-      end
+      }
 
       it "restarts and show the message only about restarted" do
         allow(Guard::Compat::UI).to receive(:info)
