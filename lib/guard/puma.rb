@@ -1,9 +1,6 @@
-require "guard"
-require "guard/plugin"
-require "guard/puma/runner"
-require "rbconfig"
-require "guard/puma/version"
-require "guard/compat/plugin"
+require 'guard/compat/plugin'
+require_relative 'puma/runner'
+require_relative 'puma/version'
 
 module Guard
   class Puma < Plugin
@@ -14,11 +11,13 @@ module Guard
     end
 
     DEFAULT_OPTIONS = {
+      :pumactl => false,
       :port => 4000,
       :environment => default_env,
       :start_on_start => true,
       :force_run => false,
       :timeout => 20,
+      :restart_timeout => 1,
       :debugger => false,
       :notifications => %i[restarting restarted not_restarted stopped]
     }
@@ -28,35 +27,54 @@ module Guard
       @options = DEFAULT_OPTIONS.merge(options)
       @options[:port] = nil if @options.key?(:config)
       @runner = ::Guard::PumaRunner.new(@options)
+      @last_restarted = Time.now
     end
 
     def start
+      return unless options[:start_on_start]
       server = options[:server] ? "#{options[:server]} and " : ""
-      UI.info "Puma starting#{port_text} in #{server}#{options[:environment]} environment."
-      runner.start if options[:start_on_start]
+      Compat::UI.info(
+        "Puma starting#{port_text} in #{server}#{options[:environment]} environment."
+      )
+      runner.start
     end
 
     def reload
-      UI.info "Restarting Puma..."
+      return if (Time.now - @last_restarted) < options[:restart_timeout]
+      @last_restarted = Time.now
+      Compat::UI.info "Restarting Puma..."
       if options[:notifications].include?(:restarting)
-        Notifier.notify("Puma restarting#{port_text} in #{options[:environment]} environment...", :title => "Restarting Puma...", :image => :pending)
+        Compat::UI.notify(
+          "Puma restarting#{port_text} in #{options[:environment]} environment...",
+          title: "Restarting Puma...", image: :pending
+        )
       end
       if runner.restart
-        UI.info "Puma restarted"
+        Compat::UI.info "Puma restarted"
         if options[:notifications].include?(:restarted)
-          Notifier.notify("Puma restarted#{port_text}.", :title => "Puma restarted!", :image => :success)
+          Compat::UI.notify(
+            "Puma restarted#{port_text}.",
+            title: "Puma restarted!", image: :success
+          )
         end
       else
-        UI.info "Puma NOT restarted, check your log files."
+        Compat::UI.info "Puma NOT restarted, check your log files."
         if options[:notifications].include?(:not_restarted)
-          Notifier.notify("Puma NOT restarted, check your log files.", :title => "Puma NOT restarted!", :image => :failed)
+          Compat::UI.notify(
+            "Puma NOT restarted, check your log files.",
+            title: "Puma NOT restarted!", image: :failed
+          )
         end
       end
     end
 
     def stop
+      return unless options[:start_on_start]
       if options[:notifications].include?(:stopped)
-        Notifier.notify("Until next time...", :title => "Puma shutting down.", :image => :pending)
+        Compat::UI.notify(
+          "Until next time...",
+          title: "Puma shutting down.", image: :pending
+        )
       end
       runner.halt
     end

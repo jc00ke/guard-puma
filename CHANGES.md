@@ -1,5 +1,15 @@
 # Changes
 
+## master
+
+* Add `:pumactl` option
+* Add `:restart_timeout` option
+* Don't stop Puma if it was not started by Guard
+* Don't notify about start when no start
+* Improve `guard-compat` using (https://github.com/guard/guard-compat#migrating-your-api-calls)
+* Remove unused `pry` dependency
+* Update versions of dependencies
+
 ## 0.4.1
 
 * Improve notifications. Via #30
