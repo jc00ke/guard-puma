@@ -1,6 +1,6 @@
 # Changes
 
-## master
+## 0.5.0
 
 * Add `:pumactl` option
 * Add `:restart_timeout` option
