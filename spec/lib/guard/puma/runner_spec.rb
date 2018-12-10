@@ -93,6 +93,17 @@ describe Guard::PumaRunner do
       let(:path) { "/tmp/elephants" }
       let(:environment) { "special_dev" }
 
+      context "without pumactl but with a default config file" do
+        let(:options) { { pumactl: false } }
+
+        it "assumes options are set in config" do
+          allow_any_instance_of(Guard::PumaRunner).
+            to receive(:default_config_file_exists?).
+            and_return(true)
+          expect(runner.cmd_opts).to match("--config config/puma.rb")
+        end
+      end
+
       context "without pumactl" do
         let(:options) { { config: path, pumactl: false } }
 

@@ -23,6 +23,8 @@ module Guard
       }
       if options[:config]
         puma_options['--config'] = options[:config]
+      elsif default_config_file_exists?
+        puma_options['--config'] = DEFAULT_CONFIG_FILE_PATH
       else
         puma_options['--port'] = options[:port]
       end
@@ -67,6 +69,8 @@ module Guard
 
     private
 
+    DEFAULT_CONFIG_FILE_PATH = "config/puma.rb".freeze
+
     PUMA_OPTIONS_KEYS_BY_PUMACTL = {
       true => {
         config:      '--config-file',
@@ -79,6 +83,10 @@ module Guard
     }.freeze
 
     private_constant :PUMA_OPTIONS_KEYS_BY_PUMACTL
+
+    def default_config_file_exists?
+      File.exist?(DEFAULT_CONFIG_FILE_PATH)
+    end
 
     def puma_options_key(key)
       keys = PUMA_OPTIONS_KEYS_BY_PUMACTL[@pumactl]
