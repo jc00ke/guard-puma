@@ -1,5 +1,9 @@
 # Changes
 
+## 0.5.1
+
+* Detect and use `config/puma.rb` if present
+
 ## 0.5.0
 
 * Add `:pumactl` option
