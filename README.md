@@ -1,6 +1,5 @@
 # Guard::Puma
 [![Build Status](https://secure.travis-ci.org/jc00ke/guard-puma.png)](http://travis-ci.org/jc00ke/guard-puma)
-[![Dependency Status](https://gemnasium.com/jc00ke/guard-puma.png?travis)](https://gemnasium.com/jc00ke/guard-puma)
 
 Restart Puma when some files change
 
