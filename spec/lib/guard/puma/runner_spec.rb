@@ -13,6 +13,16 @@ describe Guard::PumaRunner do
     it "sets options" do
       expect(runner.options).to eq(options)
     end
+
+    it "sets the command options" do
+      runner = described_class.new(options.merge(control_token: "abc"))
+      expect(runner.cmd_opts).to include("--config - ")
+      expect(runner.cmd_opts).to include("--control-token abc")
+      expect(runner.cmd_opts).to include("--control tcp://localhost:9293")
+      expect(runner.cmd_opts).to include("--port 4000")
+      expect(runner.cmd_opts).to include("--environment development")
+      expect(runner.cmd_opts).to include("--quiet")
+    end
   end
 
   %w[halt restart].each do |cmd|

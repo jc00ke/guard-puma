@@ -17,7 +17,7 @@ module Guard
       @options = options
 
       puma_options = {
-        puma_options_key(:config) => options[:config],
+        puma_options_key(:config) => options.fetch(:config, "-"),
         puma_options_key(:control_token) => @control_token,
         puma_options_key(:control_url) => "tcp://#{@control_url}"
       }
