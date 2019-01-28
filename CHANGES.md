@@ -1,5 +1,9 @@
 # Changes
 
+## 0.5.2
+
+* Default config to `-` instead of `nil`. Fixes #38
+
 ## 0.5.1
 
 * Detect and use `config/puma.rb` if present
