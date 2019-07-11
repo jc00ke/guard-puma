@@ -1,10 +1,12 @@
 sudo: false
 language: ruby
 rvm:
-  - 2.2.5
-  - 2.3.1
+  - 2.5.5
+  - 2.6.3
+  - 2.7.0-preview1
   - rbx
-  - jruby-9.1.5.0
+  - jruby-9.2.2.0
 matrix:
   allow_failures:
     - rvm: rbx
+    - rvm: 2.7.0-preview1
