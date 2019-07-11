@@ -1,5 +1,9 @@
 # Changes
 
+## 0.6.0
+
+* Bump puma to 4.0
+
 ## 0.5.2
 
 * Default config to `-` instead of `nil`. Fixes #38
