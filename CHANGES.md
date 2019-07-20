@@ -1,5 +1,9 @@
 # Changes
 
+## master
+
+* Remove support for MRI 2.2|3 and bump other versions
+
 ## 0.6.0
 
 * Bump puma to 4.0
