@@ -15,7 +15,7 @@ Gem::Specification.new do |gem|
   gem.version       = Guard::PumaVersion::VERSION
   gem.add_dependency              "guard", "~> 2.14"
   gem.add_dependency              "guard-compat", "~> 1.2"
-  gem.add_dependency              "puma", "~> 4.0"
+  gem.add_dependency              "puma", ">= 4.0"
   gem.add_development_dependency  "rake", "~> 12"
   gem.add_development_dependency  "rspec", "~> 3.7"
   gem.add_development_dependency  "guard-rspec", "~> 4.7"
