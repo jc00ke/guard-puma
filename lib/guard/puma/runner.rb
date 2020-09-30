@@ -78,7 +78,7 @@ module Guard
       }.freeze,
       false => {
         config:      '--config',
-        control_url: '--control-url'
+        control_url: Gem::Version.new(Puma::Const::PUMA_VERSION) >= Gem::Version.new('5.0.0') ? '--control-url' : '--control'
       }.freeze
     }.freeze
 
