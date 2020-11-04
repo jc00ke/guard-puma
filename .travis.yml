@@ -6,6 +6,9 @@ rvm:
   - 2.7.0-preview1
   - rbx
   - jruby-9.2.2.0
+env:
+- PUMA_VERSION="~> 5.0"
+- PUMA_VERSION="~> 4.0"
 matrix:
   allow_failures:
     - rvm: rbx
