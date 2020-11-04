@@ -18,11 +18,7 @@ describe Guard::PumaRunner do
       runner = described_class.new(options.merge(control_token: "abc"))
       expect(runner.cmd_opts).to include("--config - ")
       expect(runner.cmd_opts).to include("--control-token abc")
-      if Gem::Version.new(Puma::Const::PUMA_VERSION) >= Gem::Version.new('5.0.0')
-        expect(runner.cmd_opts).to include("--control-url tcp://localhost:9293")
-      else
-        expect(runner.cmd_opts).to include("--control tcp://localhost:9293")
-      end
+      expect(runner.cmd_opts).to include("--control-url tcp://localhost:9293")
       expect(runner.cmd_opts).to include("--port 4000")
       expect(runner.cmd_opts).to include("--environment development")
       expect(runner.cmd_opts).to include("--quiet")
@@ -136,11 +132,7 @@ describe Guard::PumaRunner do
           it "assumes options are set in config" do
             expect(runner.cmd_opts).to match("--config #{path}")
             expect(runner.cmd_opts).to match(/--control-token [0-9a-f]{10,}/)
-            if Gem::Version.new(Puma::Const::PUMA_VERSION) >= Gem::Version.new('5.0.0')
-              expect(runner.cmd_opts).to match("--control-url tcp")
-            else
-              expect(runner.cmd_opts).to match("--control tcp")
-            end
+            expect(runner.cmd_opts).to match("--control-url tcp")
             expect(runner.cmd_opts).to match("--environment #{environment}")
           end
         end
