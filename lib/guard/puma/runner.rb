@@ -78,7 +78,7 @@ module Guard
       }.freeze,
       false => {
         config:      '--config',
-        control_url: '--control'
+        control_url: '--control-url',
       }.freeze
     }.freeze
 
