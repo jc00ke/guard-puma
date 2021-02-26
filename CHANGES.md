@@ -1,7 +1,8 @@
 # Changes
 
-## master
+## 0.7.0
 
+* Add MIT license identifier in gemspec. Via #45
 * Remove support for MRI 2.2|3 and bump other versions
 
 ## 0.6.0
