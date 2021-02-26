@@ -6,6 +6,7 @@ Gem::Specification.new do |gem|
   gem.email         = ["jesse@jc00ke.com"]
   gem.summary       = %q{Restart puma when files change }
   gem.homepage      = "https://github.com/jc00ke/guard-puma"
+  gem.license       = "MIT"
 
   gem.files         = `git ls-files`.split($\)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
