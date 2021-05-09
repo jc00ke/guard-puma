@@ -2,7 +2,7 @@ name: ci
 on: [push, pull_request]
 jobs:
   test:
-    name: Ruby ${{ matrix.ruby }} ${{ matrix.name_extra || '' }}
+    name: Ruby ${{ matrix.ruby }} with Puma ${{ matrix.puma_version }}
     strategy:
       matrix:
         ruby:
