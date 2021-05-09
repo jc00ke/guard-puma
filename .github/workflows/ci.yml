@@ -1,0 +1,26 @@
+name: ci
+on: [push, pull_request]
+jobs:
+  test:
+    name: Ruby ${{ matrix.ruby }} ${{ matrix.name_extra || '' }}
+    strategy:
+      matrix:
+        ruby:
+          - '3.0'
+          - 2.7
+          - 2.6
+          - 2.5
+        puma_version:
+          - "~> 5.0"
+          - "~> 4.0"
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: ruby/setup-ruby@v1
+      env:
+        PUMA_VERSION: ${{ matrix.puma_version }}
+      with:
+        bundler-cache: true # runs 'bundle install' and caches installed gems automatically
+        bundler: ${{ matrix.bundler || 2 }}
+        ruby-version: ${{ matrix.ruby }}
+    - run: bundle exec rake
