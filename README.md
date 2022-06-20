@@ -28,6 +28,14 @@ guard 'puma', :port => 4000 do
 end
 ```
 
+Run `guard-puma` with `bundle exec guard`.
+
+Note that if you're running `guard-puma` in Docker, you'll additionally need to pass the `-i` argument to your command in order to disable all terminal interactions, for example:
+
+```
+CMD ["bundle", "exec", "guard", "-i"]
+```
+
 ## Options
 
 * `:port` is the port number to run on (default `4000`)
