@@ -1,4 +1,5 @@
 require 'net/http'
+require 'puma/detect'
 require 'puma/configuration'
 
 module Guard

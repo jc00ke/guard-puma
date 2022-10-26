@@ -1,5 +1,9 @@
 # Changes
 
+## 0.8.0
+
+* Bump puma to 6.0
+
 ## 0.7.0
 
 * Add MIT license identifier in gemspec. Via #45
