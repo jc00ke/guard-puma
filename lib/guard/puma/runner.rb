@@ -121,7 +121,7 @@ module Guard
     end
 
     def nix_cmd(puma_cmd, background = false)
-      %(sh -c 'cd #{Dir.pwd} && #{puma_cmd} #{'&' if background}')
+      %(sh -c 'cd "#{Dir.pwd}" && #{puma_cmd} #{'&' if background}')
     end
 
     def windows_cmd(puma_cmd, background = false)

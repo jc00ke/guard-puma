@@ -50,7 +50,7 @@ describe Guard::PumaRunner do
         end
 
         let(:command) {
-          %(sh -c 'cd #{Dir.pwd} && pumactl #{runner.cmd_opts} #{cmd} ')
+          %(sh -c 'cd "#{Dir.pwd}" && pumactl #{runner.cmd_opts} #{cmd} ')
         }
 
         it "#{cmd}s" do
