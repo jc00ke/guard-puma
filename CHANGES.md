@@ -1,5 +1,9 @@
 # Changes
 
+## 0.9.0
+
+- Bump puma to 7.0
+
 ## 0.8.1
 
 - Fix sh command for directories with spaces on unix-based systems
