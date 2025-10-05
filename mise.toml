@@ -1,5 +1,5 @@
-[settings]
-idiomatic_version_file_enable_tools = ["ruby"]
+[tools]
+ruby = "3.4.6"
 
 [tasks.build]
 run = "gem build guard-puma.gemspec"
