@@ -1,5 +1,9 @@
 # Changes
 
+## 0.9.2
+
+- Move Ruby version out of Gemfile
+
 ## 0.9.1
 
 - Require Ruby 3.2 or later
