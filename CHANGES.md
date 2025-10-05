@@ -1,5 +1,9 @@
 # Changes
 
+## 0.9.1
+
+- Require Ruby 3.2 or later
+
 ## 0.9.0
 
 - Bump puma to 7.0
