@@ -9,8 +9,8 @@ description = "Build the latest version"
 run = """
 #!/usr/bin/env bash
 version="$(ruby -r ./lib/guard/puma/version.rb -e 'puts Guard::PumaVersion::VERSION')"
-
-gem push guard-puma-$version.gem
+otp="$(op read "$OP_OTP")"
+gem push guard-puma-$version.gem --otp $otp
 """
 description = "Pushes the latest version to RubyGems"
 depends = ["build"]
