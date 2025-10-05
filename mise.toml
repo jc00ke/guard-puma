@@ -1,0 +1,16 @@
+[settings]
+idiomatic_version_file_enable_tools = ["ruby"]
+
+[tasks.build]
+run = "gem build guard-puma.gemspec"
+description = "Build the latest version"
+
+[tasks.release]
+run = """
+#!/usr/bin/env bash
+version="$(ruby -r ./lib/guard/puma/version.rb -e 'puts Guard::PumaVersion::VERSION')"
+
+gem push guard-puma-$version.gem
+"""
+description = "Pushes the latest version to RubyGems"
+depends = ["build"]

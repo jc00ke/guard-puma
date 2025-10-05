@@ -60,6 +60,7 @@ CMD ["bundle", "exec", "guard", "-i"]
 ## Contributing
 
 1. Fork it
+1. `mise install`
 1. Create your feature branch (`git checkout -b my-new-feature`)
 1. Leave the version alone!
 1. Add what you changed to CHANGES.md
@@ -72,5 +73,4 @@ CMD ["bundle", "exec", "guard", "-i"]
 1. Update [changelog](CHANGES.md)
 1. Bump version in `lib/guard/puma/version.rb`
 1. Commit
-1. `gem build guard-puma.gemspec`
-1. `gem push guard-puma-VERSION.gem`
+1. `mise release`
