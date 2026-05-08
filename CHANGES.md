@@ -1,5 +1,9 @@
 # Changes
 
+## Unreleased
+
+- Bump puma to 8.0
+
 ## 0.9.2
 
 - Move Ruby version out of Gemfile
